@@ -13,7 +13,6 @@
     "bootstrap": "^4.6.0",
     "browser-image-compression": "^1.0.14",
     "browser-image-resizer": "^2.2.0",
-    "firebase": "^8.4.3",
     "firebaseui": "^4.8.0",
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
