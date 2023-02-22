@@ -1,94 +1,13 @@
-import React, { useState, useEffect } from "react";
-import {Link} from 'react-router-dom'
-import {
-  Row,
-  Col,
-  Card,
-  Button,
-  Container,
-  Modal,
-  handleClose,
-  show,
-  Nav,
-} from "react-bootstrap";
+import React,{useState} from "react";
+import {Row,Col,Card,Container} from "react-bootstrap";
 import Navbar from '../Components/navbar'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBed,
-  faShower,
-  faMapMarkerAlt,
-  faRupeeSign,
-} from "@fortawesome/free-solid-svg-icons";
+import {faBed,faShower,faMapMarkerAlt,faRupeeSign} from "@fortawesome/free-solid-svg-icons";
 import { v4 as uuidv4 } from "uuid";
-import firebase from "firebase";
-import { auth, database } from "../config";
+
 
 export default function VacationVillas() {
-  //Authstate
-  const [authState, setAuthState] = useState(null);
-  const [userUid, setUserUid] = useState(null);
-  const [listingsCheck, setListingsCheck] = useState(null);
-  //snapshots
-  const [listings, setListings] = useState([]);
-   //spinner
-   const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (!user) {
-        setAuthState(false);
-      } else {
-        setAuthState(true);
-        setUserUid(user.uid);
-      }
-    });
-  }, []);
-
-  
-  useEffect(() => {
-    database
-      .ref("properties")
-      .once("value", (snapshot) => {
-        if (snapshot.exists()) {
-          setListingsCheck(true);
-          {setLoading(false)}
-        } else {
-          setListingsCheck(false);
-          {setLoading(false)}
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [userUid]);
-  //
-
-  //get listing data
-  useEffect(() => {
-    database
-      .ref("properties")
-      .orderByChild("category")
-      .equalTo("Villas For Vacation")
-      .on("value", (snapshot) => {
-        const items = [];
-        snapshot.forEach((childSnapshot) => {
-          var childKey = childSnapshot.key;
-          var data = childSnapshot.val();
-          items.push({
-            key: childKey,
-            title: data.title,
-            imageOneURL: data.imageOneURL,
-            bedrooms: data.bedrooms,
-            bathrooms: data.bathrooms,
-            city: data.city,
-            per_month: data.per_month,
-          });
-        });
-        setListings(items);
-      });
-  }, [userUid]);
-  //
-
+  const [loading, setLoading] = useState(true)
   return (
     <>
     <Navbar/>
@@ -109,33 +28,80 @@ export default function VacationVillas() {
      
       <Container>
         <Row>
-          {listings.map((data, id) => (
+          {/* {listings.map((data, id) => ( */}
            <Col sm={12} md={4} lg={4} key={uuidv4()}>
 
-           <Link to={{ pathname: '/property', search: `?${data.key}`, state: { fromDashboard: true }}}>
+           {/* <Link to={{ pathname: '/property', search: `?${data.key}`, state: { fromDashboard: true }}}> */}
 
            <Card className="all-properties">
                 <Card.Img
                   variant="top"
-                  src={data.imageOneURL}
+                  src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTl8fHJlYWxzdGF0ZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
                   className="my-listings-thumbnail"
                 />
                 <Card.Body>
-                  <Card.Title className="text-dark">{data.title}</Card.Title>
+                  <Card.Title className="text-dark">data.title</Card.Title>
                   <Card.Text className="p-2 text-dark">
-                    <FontAwesomeIcon icon={faBed} /> {data.bedrooms}&nbsp;
-                    <FontAwesomeIcon icon={faShower} /> {data.bathrooms}&nbsp;
-                    <FontAwesomeIcon icon={faMapMarkerAlt} /> {data.city}&nbsp;
+                    <FontAwesomeIcon icon={faBed} /> data.bedrooms&nbsp;
+                    <FontAwesomeIcon icon={faShower} /> data.bathrooms&nbsp;
+                    <FontAwesomeIcon icon={faMapMarkerAlt} /> data.city&nbsp;
                     <span className="p-2">
-                      <FontAwesomeIcon icon={faRupeeSign} /> {data.per_month}
+                      <FontAwesomeIcon icon={faRupeeSign} /> data.per_month
                     </span>
                   </Card.Text>
                 </Card.Body>
               </Card>
-              </Link>
+              {/* </Link> */}
             </Col>
-           
-          ))}
+            <Col sm={12} md={4} lg={4} key={uuidv4()}>
+
+           {/* <Link to={{ pathname: '/property', search: `?${data.key}`, state: { fromDashboard: true }}}> */}
+
+           <Card className="all-properties">
+                <Card.Img
+                  variant="top"
+                  src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTl8fHJlYWxzdGF0ZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
+                  className="my-listings-thumbnail"
+                />
+                <Card.Body>
+                  <Card.Title className="text-dark">data.title</Card.Title>
+                  <Card.Text className="p-2 text-dark">
+                    <FontAwesomeIcon icon={faBed} /> data.bedrooms&nbsp;
+                    <FontAwesomeIcon icon={faShower} /> data.bathrooms&nbsp;
+                    <FontAwesomeIcon icon={faMapMarkerAlt} /> data.city&nbsp;
+                    <span className="p-2">
+                      <FontAwesomeIcon icon={faRupeeSign} /> data.per_month
+                    </span>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+              {/* </Link> */}
+            </Col>
+            <Col sm={12} md={4} lg={4} key={uuidv4()}>
+
+           {/* <Link to={{ pathname: '/property', search: `?${data.key}`, state: { fromDashboard: true }}}> */}
+
+           <Card className="all-properties">
+                <Card.Img
+                  variant="top"
+                  src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTl8fHJlYWxzdGF0ZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
+                  className="my-listings-thumbnail"
+                />
+                <Card.Body>
+                  <Card.Title className="text-dark">data.title</Card.Title>
+                  <Card.Text className="p-2 text-dark">
+                    <FontAwesomeIcon icon={faBed} /> data.bedrooms&nbsp;
+                    <FontAwesomeIcon icon={faShower} /> data.bathrooms&nbsp;
+                    <FontAwesomeIcon icon={faMapMarkerAlt} /> data.city&nbsp;
+                    <span className="p-2">
+                      <FontAwesomeIcon icon={faRupeeSign} /> data.per_month
+                    </span>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+              {/* </Link> */}
+            </Col>
+          {/* ))} */}
         </Row>
       </Container>
       <br />

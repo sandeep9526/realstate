@@ -41,8 +41,6 @@ export default function Home() {
       <HeroSection/>
       <FeaturedSection/>
       <CategoriesSection/>
-      <FindRoommatesContent/>
-      <Footer/>
       </>
       )
     }

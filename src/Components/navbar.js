@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from 'react'
-import {Link} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Nav from 'react-bootstrap/Nav'
@@ -35,83 +35,26 @@ export default function NavigationBar({companyName="DevBud"}) {
       setPos("moved")
     }
   },[])
-    
-
-    // useEffect(() => {
-    //     firebase.auth().onAuthStateChanged(function (user) {
-    //       if (!user) {
-    //         setAuthState(false)
-    //       }else{
-    //         setAuthState(true)
-    //       }
-    //     });
-    //   }, [])
-
-//signout function
-const Logout = () => {
-  firebase.auth().signOut().then(()=>{
-    // <Redirect to="/" />
-  })
-  .catch((error)=>{
-   toast(error, {type:"error"})
-  })
-}
-
 
 
   return (
   <Navbar expand="lg" className="navbar" 
   style={{backgroundColor: pos === "top" ? "" : "#fff", boxShadow: pos === "top" ? "" : "0.8px 0.8px 0.8px #000"}}
   >
-  <Link to="/"><Navbar.Brand  className={pos === "top" ? "text-light brand-name": "text-dark brand-name"}>{companyName}</Navbar.Brand></Link>
+  <NavLink to="/"><Navbar.Brand  className={pos === "top" ? "text-light brand-name": "text-dark brand-name"}>{companyName}</Navbar.Brand></NavLink>
   <Navbar.Toggle aria-controls="basic-navbar-nav" />
     <Navbar.Collapse id="basic-navbar-nav">
     <Nav className="me-auto">
-      <Nav.Link as={Link} to="/"
+      <NavLink to="/"
       className={pos === "top" ? "text-light": "text-dark"}
-      >Home</Nav.Link>
-      {authState ? (
+      >Home</NavLink>
        <React.Fragment>
-      <Nav.Link as={Link} to="/personal-rooms" className={pos === "top" ? "text-light": "text-dark"}>Personal Rooms</Nav.Link>
-      <Nav.Link as={Link} to="/family-apartments" className={pos === "top" ? "text-light": "text-dark"}>Family Apartments</Nav.Link>
-      <Nav.Link as={Link} to="/vacation-villas" className={pos === "top" ? "text-light": "text-dark"}>Villas for Vacation</Nav.Link>
+      <NavLink to="/personal-rooms" className={pos === "top" ? "text-light": "text-dark"}>Personal Rooms</NavLink>
+      <NavLink to="/family-apartments" className={pos === "top" ? "text-light": "text-dark"}>Family Apartments</NavLink>
+      <NavLink to="/vacation-villas" className={pos === "top" ? "text-light": "text-dark"}>Villas for Vacation</NavLink>
       </React.Fragment>
-      ):""}
     </Nav>
     <Navbar.Collapse className="justify-content-end">
-    <NavDropdown title={<FontAwesomeIcon icon={faUserCircle} size="lg"
-    className={pos === "top" ? "text-light dropdown-menu-bar": "text-dark dropdown-menu-bar"}
-    spin/>}>
-      {authState ? (
-        <>
-        <Container>
-        <Nav.Link as={Link} to="/my-profile" className="text-dark">My Profile</Nav.Link>
-        <Nav.Link as={Link} to="/my-bookings" className="text-dark">Bookings</Nav.Link>
-        <Nav.Link as={Link} to="/my-home-bookings" className="text-dark">Host Bookings</Nav.Link>
-        </Container>
-        </>
-        ) : (
-          <>
-        <NavDropdown.Item><Nav.Link as={Link} to="/">Login</Nav.Link></NavDropdown.Item>
-        <NavDropdown.Item><Nav.Link as={Link} to="/">Signup</Nav.Link></NavDropdown.Item>
-        <NavDropdown.Divider />
-        </>
-        )}
-        {authState ? (
-        <>
-        <NavDropdown.Item><Button className="btn btn-danger" onClick={Logout}>Logout</Button></NavDropdown.Item>
-        </>
-        ) :""}
-      </NavDropdown>
-
-    {authState ? (
-    <>
-    <Navbar.Text>
-      <Link to="/become-host"><Button className="host-btn" variant="outline-primary">Become a Host</Button></Link>
-    </Navbar.Text>
-    </>
-      ):""}
-
   </Navbar.Collapse>
   </Navbar.Collapse>
   {/* Error toast */}

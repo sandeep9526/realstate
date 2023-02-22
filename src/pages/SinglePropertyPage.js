@@ -49,101 +49,7 @@ export default function SinglePropertyPage() {
   const [review, setReview] = useState("")
   const [name, setName] = useState("")
 
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (!user) {
-        setAuthState(false);
-      } else {
-        setAuthState(true);
-        setUserUid(user.uid);
-        setName(user.displayName);
-      }
-    });
-  }, []);
-
-  //get listing data
-  useEffect(() => {
-    //Retrive key from URL
-    const queryString = window.location.search;
-    const RetrivedchildKey = queryString.substring(1);
-    setPropertyKey(RetrivedchildKey);
-
-    database
-      .ref("properties")
-      .child(RetrivedchildKey)
-      .once("value", function (snapshot) {
-        const items = [];
-        var val = snapshot.val();
-        var hostUid = snapshot.val().userUid;
-        var img = snapshot.val().imageOneURL;
-        var amount = snapshot.val().per_night;
-        var title_head = snapshot.val().title;
-        var city_vr = snapshot.val().city;
-        var address_vr = snapshot.val().address;
-        var livingRoom = snapshot.val().livingRoom;
-        var internet = snapshot.val().internet;
-        var gym = snapshot.val().gym;
-        var parking = snapshot.val().parking;
-        var ac = snapshot.val().ac;
-        var gatedSecurity = snapshot.val().gatedSecurity;
-        var waterSupply = snapshot.val().waterSupply;
-        setHostUid(hostUid);
-        setImageUrl(img)
-        setPrice(amount)
-        setheading(title_head)
-        setCity(city_vr)
-        setAddress(address_vr)
-        items.push({
-          key: RetrivedchildKey,
-          userUid: userUid,
-          title: val.title,
-          imageOneURL: val.imageOneURL,
-          imageTwoURL: val.imageTwoURL,
-          imageThreeURL: val.imageThreeURL,
-          imageFourURL: val.imageFourURL,
-          bedrooms: val.bedrooms,
-          bathrooms: val.bathrooms,
-          city: val.city,
-          address: val.address,
-          per_month: val.per_month,
-          per_night: val.per_night,
-          per_week: val.per_week,
-          per_year: val.per_year,
-          category: val.category,
-          about: val.about,
-          name: val.name,
-
-          livingRoom: livingRoom,
-          internet: internet,
-          gym: gym,
-          parking: parking,
-          ac: ac,
-          gatedSecurity: gatedSecurity,
-          waterSupply: waterSupply,
-        });
-        setListings(items);
-      });
-  }, [userUid]);
-  //
-
-  const submitBooking = (e) => {
-    e.preventDefault();
-    database.ref("Bookings").push({
-      userUid: userUid,
-      arrivalDate: arrivalDate,
-      departDate: departDate,
-      guests: guests,
-      propertyKey: propertyKey,
-      hostUid: hostUid,
-      imageUrl : imageUrl,
-      price: price,
-      title: heading,
-      city: city,
-      address: address,
-    });
-    setSubmit("Submitted");
-  };
-
+  
   const submitReview = (e) => {
     e.preventDefault();
     database.ref("Reviews").push({
@@ -405,7 +311,7 @@ export default function SinglePropertyPage() {
                     ₹ {data.per_night}/Night
                   </Card.Header>
                   <Card.Body>
-                    <Form onSubmit={submitBooking}>
+                    <Form>
                       <Form.Group controlId="formBasicEmail">
                         <Form.Label>Arrival Date</Form.Label>
                         <Form.Control

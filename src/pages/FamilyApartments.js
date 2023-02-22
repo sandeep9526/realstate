@@ -32,61 +32,8 @@ export default function FamilyApartments() {
   const [listings, setListings] = useState([]);
    //spinner
    const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (!user) {
-        setAuthState(false);
-      } else {
-        setAuthState(true);
-        setUserUid(user.uid);
-      }
-    });
-  }, []);
-
-  
-  useEffect(() => {
-    database
-      .ref("properties")
-      .once("value", (snapshot) => {
-        if (snapshot.exists()) {
-          setListingsCheck(true);
-          {setLoading(false)}
-        } else {
-          setListingsCheck(false);
-          {setLoading(false)}
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [userUid]);
   //
 
-  //get listing data
-  useEffect(() => {
-    database
-      .ref("properties")
-      .orderByChild("category")
-      .equalTo("Family Apartments")
-      .on("value", (snapshot) => {
-        const items = [];
-        snapshot.forEach((childSnapshot) => {
-          var childKey = childSnapshot.key;
-          var data = childSnapshot.val();
-          items.push({
-            key: childKey,
-            title: data.title,
-            imageOneURL: data.imageOneURL,
-            bedrooms: data.bedrooms,
-            bathrooms: data.bathrooms,
-            city: data.city,
-            per_month: data.per_month,
-          });
-        });
-        setListings(items);
-      });
-  }, [userUid]);
   //
 
   return (
@@ -109,33 +56,81 @@ export default function FamilyApartments() {
      
       <Container>
         <Row>
-          {listings.map((data, id) => (
+          {/* {listings.map((data, id) => ( */}
            <Col sm={12} md={4} lg={4} key={uuidv4()}>
 
-           <Link to={{ pathname: '/property', search: `?${data.key}`, state: { fromDashboard: true }}}>
+           {/* <Link to={{ pathname: '/property', search: `?${data.key}`, state: { fromDashboard: true }}}> */}
 
            <Card className="all-properties">
                 <Card.Img
                   variant="top"
-                  src={data.imageOneURL}
+                  src="https://images.unsplash.com/photo-1612965607446-25e1332775ae?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTV8fHJlYWxzdGF0ZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
                   className="my-listings-thumbnail"
                 />
                 <Card.Body>
-                  <Card.Title className="text-dark">{data.title}</Card.Title>
+                  <Card.Title className="text-dark">data.title</Card.Title>
                   <Card.Text className="p-2 text-dark">
-                    <FontAwesomeIcon icon={faBed} /> {data.bedrooms}&nbsp;
-                    <FontAwesomeIcon icon={faShower} /> {data.bathrooms}&nbsp;
-                    <FontAwesomeIcon icon={faMapMarkerAlt} /> {data.city}&nbsp;
+                    <FontAwesomeIcon icon={faBed} /> data.bedrooms&nbsp;
+                    <FontAwesomeIcon icon={faShower} /> data.bathrooms&nbsp;
+                    <FontAwesomeIcon icon={faMapMarkerAlt} /> data.city&nbsp;
                     <span className="p-2">
-                      <FontAwesomeIcon icon={faRupeeSign} /> {data.per_month}
+                      <FontAwesomeIcon icon={faRupeeSign} /> data.per_month
                     </span>
                   </Card.Text>
                 </Card.Body>
               </Card>
-              </Link>
-            </Col>
-           
-          ))}
+              {/* </Link> */}
+            </Col>   
+            <Col sm={12} md={4} lg={4} key={uuidv4()}>
+
+{/* <Link to={{ pathname: '/property', search: `?${data.key}`, state: { fromDashboard: true }}}> */}
+
+<Card className="all-properties">
+     <Card.Img
+       variant="top"
+       src="https://images.unsplash.com/photo-1612965607446-25e1332775ae?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTV8fHJlYWxzdGF0ZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
+       className="my-listings-thumbnail"
+     />
+     <Card.Body>
+       <Card.Title className="text-dark">data.title</Card.Title>
+       <Card.Text className="p-2 text-dark">
+         <FontAwesomeIcon icon={faBed} /> data.bedrooms&nbsp;
+         <FontAwesomeIcon icon={faShower} /> data.bathrooms&nbsp;
+         <FontAwesomeIcon icon={faMapMarkerAlt} /> data.city&nbsp;
+         <span className="p-2">
+           <FontAwesomeIcon icon={faRupeeSign} /> data.per_month
+         </span>
+       </Card.Text>
+     </Card.Body>
+   </Card>
+   {/* </Link> */}
+ </Col>   
+ <Col sm={12} md={4} lg={4} key={uuidv4()}>
+
+{/* <Link to={{ pathname: '/property', search: `?${data.key}`, state: { fromDashboard: true }}}> */}
+
+<Card className="all-properties">
+     <Card.Img
+       variant="top"
+       src="https://images.unsplash.com/photo-1612965607446-25e1332775ae?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTV8fHJlYWxzdGF0ZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
+       className="my-listings-thumbnail"
+     />
+     <Card.Body>
+       <Card.Title className="text-dark">data.title</Card.Title>
+       <Card.Text className="p-2 text-dark">
+         <FontAwesomeIcon icon={faBed} /> data.bedrooms&nbsp;
+         <FontAwesomeIcon icon={faShower} /> data.bathrooms&nbsp;
+         <FontAwesomeIcon icon={faMapMarkerAlt} /> data.city&nbsp;
+         <span className="p-2">
+           <FontAwesomeIcon icon={faRupeeSign} /> data.per_month
+         </span>
+       </Card.Text>
+     </Card.Body>
+   </Card>
+   {/* </Link> */}
+ </Col>   
+ 
+          {/* ))} */}
         </Row>
       </Container>
       <br />
