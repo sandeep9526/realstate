@@ -3,24 +3,13 @@ import {NavLink} from 'react-router-dom'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Nav from 'react-bootstrap/Nav'
-import NavDropdown from 'react-bootstrap/NavDropdown'
 import Navbar from 'react-bootstrap/Navbar'
-import Button from 'react-bootstrap/Button'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
-import firebase from 'firebase'
-import { Container } from 'react-bootstrap';
 
 export default function NavigationBar({companyName="DevBud"}) {
-
-    //Authstate
-    const [authState, setAuthState ] = useState(null);
-    //Transparent scroll navbar state
     const [pos, setPos] = useState("top")
 
     useEffect (()=>{     
       var path = window.location.pathname
-
       if(path == "/home"){
       document.addEventListener("scroll", e => {
           let scrolled = document.scrollingElement.scrollTop;
@@ -46,11 +35,11 @@ export default function NavigationBar({companyName="DevBud"}) {
     <Navbar.Collapse id="basic-navbar-nav">
     <Nav className="me-auto">
       <NavLink to="/"
-      className={pos === "top" ? "text-light": "text-dark"}
+      className={pos === "top" ? "text-light": "text-dark mr-3"}
       >Home</NavLink>
        <React.Fragment>
-      <NavLink to="/personal-rooms" className={pos === "top" ? "text-light": "text-dark"}>Personal Rooms</NavLink>
-      <NavLink to="/family-apartments" className={pos === "top" ? "text-light": "text-dark"}>Family Apartments</NavLink>
+      <NavLink to="/personal-rooms" className={pos === "top" ? "text-light": "text-dark mr-3"}>Personal Rooms</NavLink>
+      <NavLink to="/family-apartments" className={pos === "top" ? "text-light": "text-dark mr-3"}>Family Apartments</NavLink>
       <NavLink to="/vacation-villas" className={pos === "top" ? "text-light": "text-dark"}>Villas for Vacation</NavLink>
       </React.Fragment>
     </Nav>

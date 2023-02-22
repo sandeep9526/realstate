@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../Components/navbar";
-import { Link } from "react-router-dom";
 import {
-  Button,
   Carousel,
   Row,
   Col,
   Container,
   Card,
-  Form,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -20,65 +17,19 @@ import {
   faCheckSquare,
   faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import firebase from "firebase";
-import { auth, database } from "../config";
-import { toast } from "react-toastify";
-import { v4 as uuidv4 } from "uuid";
-import ReadReviews from '../Components/ReadReviews'
+import { Rooms } from "../Components/RoomData/RoomData";
+import { useParams } from "react-router-dom";
 
 
-export default function SinglePropertyPage() {
-  //Authstate
-  const [authState, setAuthState] = useState(null);
-  const [userUid, setUserUid] = useState(null);
+export default function SinglePropertyPage() {;
+  const {id} = useParams()
   const [listings, setListings] = useState([]);
-  //Booking form states
-  const [arrivalDate, setArrivalDate] = useState("");
-  const [departDate, setDepartDate] = useState("");
-  const [guests, setGuests] = useState("");
-  const [propertyKey, setPropertyKey] = useState("");
-  const [hostUid, setHostUid] = useState("");
-  const [submit, setSubmit] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [price, setPrice] = useState("");
-  const [heading, setheading] = useState("");
-  const [city, setCity] = useState("");
-  const [address, setAddress] = useState("");
-  //Review form states
-  const [stars, setStars] = useState("")
-  const [review, setReview] = useState("")
-  const [name, setName] = useState("")
 
+  useEffect(() => {
+    const data = Rooms.filter(item=>item.id==id)
+    setListings(data)
+  }, [])
   
-  const submitReview = (e) => {
-    e.preventDefault();
-    database.ref("Reviews").push({
-      userUid: userUid,
-      propertyKey: propertyKey,
-      hostUid: hostUid,
-      stars: stars,
-      review: review,
-      name: name,
-    });
-    toast("Review has been successfullt posted", {type:"success"})
-    document.getElementById("review-form").reset();
-  };
-
-    //Option values
-    function handleChange(event) {
-      setStars(event.target.value);
-    }
-  
-
-  //Redirect after form submission
-  if (submit === "Submitted") {
-    return (
-      <>
-        {/* <Redirect to="/done-booking" /> */}
-      </>
-    );
-  }
-
   return (
     <>
       <Navbar />
@@ -90,28 +41,28 @@ export default function SinglePropertyPage() {
                 <Carousel.Item>
                   <img
                     className="d-block w-100 img-thumbnail"
-                    src={data.imageOneURL}
+                    src={data.image}
                     alt="First slide"
                   />
                 </Carousel.Item>
                 <Carousel.Item>
                   <img
                     className="d-block w-100 img-thumbnail"
-                    src={data.imageTwoURL}
+                    src={data.image}
                     alt="Second slide"
                   />
                 </Carousel.Item>
                 <Carousel.Item>
                   <img
                     className="d-block w-100 img-thumbnail"
-                    src={data.imageThreeURL}
+                    src={data.image}
                     alt="Third slide"
                   />
                 </Carousel.Item>
                 <Carousel.Item>
                   <img
                     className="d-block w-100 img-thumbnail"
-                    src={data.imageFourURL}
+                    src={data.image}
                     alt="Third slide"
                   />
                 </Carousel.Item>
@@ -125,19 +76,10 @@ export default function SinglePropertyPage() {
                 <Card>
                   <h4 className="pl-2 pt-2">{data.title}</h4>
                   <p className="text-lead pl-2">
-                    <FontAwesomeIcon icon={faMapMarkerAlt} /> {data.city},
-                    {data.address}&nbsp;&nbsp;
-                    <FontAwesomeIcon icon={faHome} /> {data.category}
+                    <FontAwesomeIcon icon={faMapMarkerAlt} /> {data.city}
                   </p>
 
                   <Row className="p-2">
-                    <Col lg={4} md={4} sm={4}>
-                      <Card className="mt-2">
-                        <Card.Body>
-                          <FontAwesomeIcon icon={faHome} /> {data.category}
-                        </Card.Body>
-                      </Card>
-                    </Col>
                     <Col lg={4} md={4} sm={4} className="mt-2">
                       <Card>
                         <Card.Body>
@@ -239,120 +181,8 @@ export default function SinglePropertyPage() {
                         {data.waterSupply == "Yes" ? <FontAwesomeIcon icon={faCheckSquare} /> : <FontAwesomeIcon icon={faTimesCircle} />}
                         </p>
                         </Col>
-
                     </Row>
-
-
-                    {/*TODO*/}
-                    {/* <iframe
-                      className="my-3"
-                      width="100%"
-                      height="300"
-                      frameborder="0"
-                      scrolling="no"
-                      marginheight="0"
-                      marginwidth="0"
-                      src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;t=&amp;z=11&amp;ie=UTF8&amp;iwloc=B&amp;output=embed&amp;q=delhi"
-                    ></iframe> */}
-
-                    <hr />
-                    
-                    <Form onSubmit={submitReview} id="review-form">
-                    <Form.Row>
-                      <Form.Group
-                        as={Col}
-                        lg={8}
-                        md={8}
-                        sm={12}
-                        controlId="formBasicText"
-                      >
-                        <Form.Label>Write Your Review</Form.Label>
-                        <Form.Control type="text" placeholder="Write here..." required onChange={(e)=>setReview(e.target.value)}/>
-                      </Form.Group>
-                      <Form.Group
-                        as={Col}
-                        lg={4}
-                        md={4}
-                        sm={12}
-                        controlId="formBasicText"
-                      >
-                        <Form.Label>Rating</Form.Label>
-                        <Form.Control
-                    as="select"
-                    name="category"
-                    onChange={handleChange}
-                  >
-                    <option>Select</option>
-                    <option value="5">5 Star</option>
-                    <option value="4">4 Star</option>
-                    <option value="3">3 Star</option>
-                    <option value="2">2 Star</option>
-                    <option value="1">1 Star</option>
-                  </Form.Control>
-                      </Form.Group>
-                      </Form.Row>
-                     
-                      <Button variant="success" type="submit">
-                        Post Review
-                      </Button>
-                      
-                    </Form>
-                   
-                    <hr />
-                    <ReadReviews/>
-                    <br/>
                   </Container>
-                </Card>
-              </Col>
-
-              <Col lg={4} md={4} sm={12}>
-                <Card className="text-center booking-form">
-                  <Card.Header className="card-booking-form-header">
-                    ₹ {data.per_night}/Night
-                  </Card.Header>
-                  <Card.Body>
-                    <Form>
-                      <Form.Group controlId="formBasicEmail">
-                        <Form.Label>Arrival Date</Form.Label>
-                        <Form.Control
-                          type="date" required
-                          onChange={(e) => setArrivalDate(e.target.value)}
-                        />
-                      </Form.Group>
-                      <Form.Group controlId="formBasicPassword">
-                        <Form.Label>Depart Date</Form.Label>
-                        <Form.Control
-                          type="date" required
-                          onChange={(e) => setDepartDate(e.target.value)}
-                        />
-                      </Form.Group>
-                      <Form.Group controlId="formBasicPassword">
-                        <Form.Label>Number of Guestes</Form.Label>
-                        <Form.Control
-                          type="number" required
-                          onChange={(e) => setGuests(e.target.value)}
-                        />
-                      </Form.Group>
-                      {/* TODO Booking button */}
-                      {/* {userUid==hostUid? "" : ""} */}
-                      <Button
-                        variant="primary"
-                        className="btn-block"
-                        type="submit"
-                      >
-                        Book Now
-                      </Button>
-                    </Form>
-                  </Card.Body>
-
-                  {/* TODO: */}
-                  
-                  <Card.Footer className="text-muted">
-                    <Link to={`/find-roommates?${data.city}Yes`}><Button variant="warning">
-                      Find Roommates in {data.city}
-                    </Button></Link>
-                  </Card.Footer>
-
                 </Card>
               </Col>
             </Row>

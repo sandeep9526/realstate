@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {Link} from 'react-router-dom'
+import { Rooms } from "../Components/RoomData/RoomData";
+import { useNavigate } from "react-router-dom";
 import {
   Row,
   Col,
   Card,
-  Button,
   Container,
-  Modal,
-  handleClose,
-  show,
-  Nav,
 } from "react-bootstrap";
 import Navbar from '../Components/navbar'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,18 +15,10 @@ import {
   faMapMarkerAlt,
   faRupeeSign,
 } from "@fortawesome/free-solid-svg-icons";
-import { v4 as uuidv4 } from "uuid";
-import firebase from "firebase";
-import { auth, database } from "../config";
+
 
 export default function FamilyApartments() {
-  //Authstate
-  const [authState, setAuthState] = useState(null);
-  const [userUid, setUserUid] = useState(null);
-  const [listingsCheck, setListingsCheck] = useState(null);
-  //snapshots
-  const [listings, setListings] = useState([]);
-   //spinner
+  const navigate = useNavigate()
    const [loading, setLoading] = useState(true)
   //
 
@@ -55,82 +43,29 @@ export default function FamilyApartments() {
 
      
       <Container>
-        <Row>
-          {/* {listings.map((data, id) => ( */}
-           <Col sm={12} md={4} lg={4} key={uuidv4()}>
-
-           {/* <Link to={{ pathname: '/property', search: `?${data.key}`, state: { fromDashboard: true }}}> */}
-
-           <Card className="all-properties">
+      <Row>
+          {Rooms.map((data, id) => {
+            return <Col onClick={()=>navigate(`/property/${data.id}`)} sm={12} md={4} lg={4} key={id+1}>
+            <Card className="all-properties">
                 <Card.Img
                   variant="top"
-                  src="https://images.unsplash.com/photo-1612965607446-25e1332775ae?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTV8fHJlYWxzdGF0ZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
+                  src={data.image}
                   className="my-listings-thumbnail"
                 />
                 <Card.Body>
-                  <Card.Title className="text-dark">data.title</Card.Title>
+                  <Card.Title className="text-dark">{data.title}</Card.Title>
                   <Card.Text className="p-2 text-dark">
-                    <FontAwesomeIcon icon={faBed} /> data.bedrooms&nbsp;
-                    <FontAwesomeIcon icon={faShower} /> data.bathrooms&nbsp;
-                    <FontAwesomeIcon icon={faMapMarkerAlt} /> data.city&nbsp;
+                    <FontAwesomeIcon icon={faBed} /> {data.bedrooms}&nbsp;
+                    <FontAwesomeIcon icon={faShower} /> {data.bathrooms}&nbsp;
+                    <FontAwesomeIcon icon={faMapMarkerAlt} /> {data.city}&nbsp;
                     <span className="p-2">
-                      <FontAwesomeIcon icon={faRupeeSign} /> data.per_month
+                      <FontAwesomeIcon icon={faRupeeSign} /> {data.per_month}
                     </span>
                   </Card.Text>
                 </Card.Body>
               </Card>
-              {/* </Link> */}
-            </Col>   
-            <Col sm={12} md={4} lg={4} key={uuidv4()}>
-
-{/* <Link to={{ pathname: '/property', search: `?${data.key}`, state: { fromDashboard: true }}}> */}
-
-<Card className="all-properties">
-     <Card.Img
-       variant="top"
-       src="https://images.unsplash.com/photo-1612965607446-25e1332775ae?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTV8fHJlYWxzdGF0ZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-       className="my-listings-thumbnail"
-     />
-     <Card.Body>
-       <Card.Title className="text-dark">data.title</Card.Title>
-       <Card.Text className="p-2 text-dark">
-         <FontAwesomeIcon icon={faBed} /> data.bedrooms&nbsp;
-         <FontAwesomeIcon icon={faShower} /> data.bathrooms&nbsp;
-         <FontAwesomeIcon icon={faMapMarkerAlt} /> data.city&nbsp;
-         <span className="p-2">
-           <FontAwesomeIcon icon={faRupeeSign} /> data.per_month
-         </span>
-       </Card.Text>
-     </Card.Body>
-   </Card>
-   {/* </Link> */}
- </Col>   
- <Col sm={12} md={4} lg={4} key={uuidv4()}>
-
-{/* <Link to={{ pathname: '/property', search: `?${data.key}`, state: { fromDashboard: true }}}> */}
-
-<Card className="all-properties">
-     <Card.Img
-       variant="top"
-       src="https://images.unsplash.com/photo-1612965607446-25e1332775ae?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTV8fHJlYWxzdGF0ZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-       className="my-listings-thumbnail"
-     />
-     <Card.Body>
-       <Card.Title className="text-dark">data.title</Card.Title>
-       <Card.Text className="p-2 text-dark">
-         <FontAwesomeIcon icon={faBed} /> data.bedrooms&nbsp;
-         <FontAwesomeIcon icon={faShower} /> data.bathrooms&nbsp;
-         <FontAwesomeIcon icon={faMapMarkerAlt} /> data.city&nbsp;
-         <span className="p-2">
-           <FontAwesomeIcon icon={faRupeeSign} /> data.per_month
-         </span>
-       </Card.Text>
-     </Card.Body>
-   </Card>
-   {/* </Link> */}
- </Col>   
- 
-          {/* ))} */}
+            </Col>
+        })}
         </Row>
       </Container>
       <br />
